@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Messages</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0b0b1a;
+            color: white;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .no-data {
+            text-align: center;
+            margin-top: 20px;
+            color: gray;
+        }
+
+        a {
+            color: #a855f7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📩 Contact Messages</h1>
+
+    <a href="/">⬅ Back to Form</a>
+
+    <% if (messages.length === 0) { %>
+        <p class="no-data">No messages found</p>
+    <% } else { %>
+
+        <table>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Message</th>
+                <th>Date</th>
+            </tr>
+
+            <% messages.forEach(msg => { %>
+                <tr>
+                    <td><%= msg.firstName %></td>
+                    <td><%= msg.lastName %></td>
+                    <td><%= msg.email %></td>
+                    <td><%= msg.phone %></td>
+                    <td><%= msg.message %></td>
+                    <td><%= msg.createdAt.toDateString() %></td>
+                </tr>
+            <% }) %>
+
+        </table>
+
+    <% } %>
+
+</body>
+</html>
