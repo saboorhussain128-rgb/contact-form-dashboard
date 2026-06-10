@@ -1,31 +1,35 @@
 /**
  * Main Application Entry Point
- * Express + EJS + MongoDB Contact Form Project
+ * Contact Form Project (Node + Express + MongoDB + EJS)
  */
 
 const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
+
+// =========================
+// CONFIG
+// =========================
 const PORT = process.env.PORT || 3000;
+const MONGO_URI = "mongodb://127.0.0.1:27017/contact_form_db";
 
-/**
- * Middleware
- * These are required to read form data and serve static files
- */
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true })); // IMPORTANT for form data
+// =========================
+// MIDDLEWARE
+// =========================
+app.use(express.static("public")); // CSS, images, JS
+app.use(express.urlencoded({ extended: true })); // form data parser
 
-/**
- * View Engine Setup (EJS)
- */
+// =========================
+// VIEW ENGINE
+// =========================
 app.set("view engine", "ejs");
 
-/**
- * MongoDB Connection
- */
+// =========================
+// DATABASE CONNECTION
+// =========================
 mongoose
-    .connect("mongodb://127.0.0.1:27017/contact_form_db")
+    .connect(MONGO_URI)
     .then(() => {
         console.log("MongoDB connected successfully");
     })
@@ -33,13 +37,17 @@ mongoose
         console.log("MongoDB connection error:", err);
     });
 
-/**
- * Contact Model
- */
+// =========================
+// MODEL
+// =========================
 const Contact = require("./models/Contact");
 
+// =========================
+// ROUTES
+// =========================
+
 /**
- * GET Route - Show Contact Page
+ * Home Page (Contact Form)
  */
 app.get("/", (req, res) => {
     res.render("index", {
@@ -48,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 /**
- * POST Route - Save Contact Form Data
+ * Handle Contact Form Submission
  */
 app.post("/contact", async (req, res) => {
     try {
@@ -57,7 +65,7 @@ app.post("/contact", async (req, res) => {
 
         console.log("Saved Data:", contactData);
 
-        // Redirect with success flag
+        // redirect with success message
         res.redirect("/?success=true");
 
     } catch (error) {
@@ -67,8 +75,25 @@ app.post("/contact", async (req, res) => {
 });
 
 /**
- * Start Server
+ * Admin Page - View All Messages
  */
+app.get("/messages", async (req, res) => {
+    try {
+        const messages = await Contact.find().sort({ createdAt: -1 });
+
+        res.render("messages", {
+            messages: messages
+        });
+
+    } catch (error) {
+        console.log("Error fetching messages:", error);
+        res.send("Error loading messages");
+    }
+});
+
+// =========================
+// START SERVER
+// =========================
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
