@@ -9,6 +9,7 @@ const Contact = require("../models/Contact");
 router.get("/", (req, res) => {
   res.render("index", {
     success: req.query.success,
+    error: null,
   });
 });
 
@@ -17,8 +18,29 @@ router.get("/", (req, res) => {
  */
 router.post("/contact", async (req, res) => {
   try {
-    const contactData = new Contact(req.body);
+    // Extract form data from request body
+    const { firstName, lastName, email, message } = req.body;
 
+    /**
+     * Server-side validation
+     * Check if any required field is empty
+     */
+    if (!firstName || !lastName || !email || !message) {
+      return res.render("index", {
+        success: false,
+        error: "All fields are required.",
+      });
+    }
+
+    // Create new contact document
+    const contactData = new Contact({
+      firstName,
+      lastName,
+      email,
+      message,
+    });
+
+    // Save to MongoDB
     await contactData.save();
 
     console.log("📩 Message Saved Successfully");

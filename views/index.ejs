@@ -24,14 +24,17 @@
                 <button type="submit">Send it to the moon 🚀</button>
             </form>
 
-            <% if (success === "true") { %>
-                <p class="success">Message sent successfully 🚀</p>
-            <% } %>
+              <% if (success === "true") { %>
+    <p class="success">Message sent successfully 🚀</p>
+<% } %>
 
-            <% if (success === "false") { %>
-                <p class="error">Something went wrong ❌</p>
-            <% } %>
+<% if (success === "false") { %>
+    <p class="error">Something went wrong ❌</p>
+<% } %>
 
+<% if (error) { %>
+    <p class="error"><%= error %></p>
+<% } %>
         </div>
 
         <div class="right">
