@@ -2,59 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contact Us</title>
+    <title>Contact Mission</title>
+
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    
-    <% if (typeof success !== "undefined") { %>
-
-    <% if (success === "true") { %>
-        <div class="success-msg">
-            Message sent successfully 🚀
-        </div>
-    <% } %>
-
-    <% if (success === "false") { %>
-        <div class="error-msg">
-            Something went wrong ❌
-        </div>
-    <% } %>
-
-<% } %>
 
     <div class="container">
 
-        <!-- LEFT SIDE -->
         <div class="left">
+            <h1>Contact Us 🚀</h1>
 
-            <h1>Get in touch</h1>
-
-            <!-- IMPORTANT: form must have POST + action -->
-            <form method="POST" action="/contact">
-
+            <form action="/contact" method="POST">
                 <input type="text" name="firstName" placeholder="First Name" required>
                 <input type="text" name="lastName" placeholder="Last Name" required>
-
                 <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="phone" placeholder="Phone Number" required>
+                <input type="text" name="phone" placeholder="Phone">
 
-                <textarea name="message" placeholder="Message" required></textarea>
+                <textarea name="message" placeholder="Your Message" required></textarea>
 
-                <button type="submit">Send Message</button>
-
+                <button type="submit">Send it to the moon 🚀</button>
             </form>
+
+            <% if (success === "true") { %>
+                <p class="success">Message sent successfully 🚀</p>
+            <% } %>
+
+            <% if (success === "false") { %>
+                <p class="error">Something went wrong ❌</p>
+            <% } %>
 
         </div>
 
-        <!-- RIGHT SIDE -->
         <div class="right">
-
-            <div class="card">
-                <p>Astronaut Section 🚀</p>
-            </div>
-
+            <img src="/images/astronaut.png" alt="astronaut">
         </div>
 
     </div>
