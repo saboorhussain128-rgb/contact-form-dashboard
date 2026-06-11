@@ -1,28 +1,43 @@
-/* Global */
-body {
+/* Reset */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #1a1a3a, #0b0b1a);
+    background: radial-gradient(circle at center, #17173c, #060616);
+    min-height: 100vh;
     color: white;
 }
 
-/* Main layout */
+/* Main Container */
 .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 80px;
-    gap: 40px;
+
+    padding: 60px 80px;
+    gap: 80px;
 }
 
-/* Left side */
+/* Left Section */
 .left {
-    width: 55%;
+    flex: 1;
+    max-width: 700px;
 }
 
 .left h1 {
-    font-size: 52px;
-    margin-bottom: 30px;
-    background: linear-gradient(90deg, #a855f7, #6366f1);
+    font-size: 64px;
+    font-weight: 800;
+    margin-bottom: 35px;
+
+    background: linear-gradient(90deg, #b066ff, #6d7cff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -31,75 +46,127 @@ body {
 form {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 18px;
 }
 
 /* Inputs */
-input, textarea {
-    width: 48%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: white;
-    outline: none;
+input {
+    width: calc(50% - 9px);
+    height: 58px;
 }
 
 textarea {
     width: 100%;
-    height: 140px;
+    min-height: 180px;
+    resize: none;
+    padding-top: 16px;
+}
+
+input,
+textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+
+    color: white;
+    padding: 0 18px;
+    font-size: 16px;
+
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 15px rgba(139,92,246,0.4);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255,255,255,0.55);
 }
 
 /* Button */
 button {
-    padding: 12px 25px;
-    background: linear-gradient(90deg, #a855f7, #6366f1);
+    margin-top: 10px;
+    padding: 16px 32px;
+
     border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(90deg, #a855f7, #6366f1);
+
     color: white;
-    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
 }
 
-/* Right side */
+/* Right Section */
 .right {
-    width: 40%;
-}
+    flex: 1;
 
-/* Glass card */
-.card {
-    height: 400px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 18px;
+    align-items: center;
 }
 
-.success-msg {
-    background: rgba(0, 255, 0, 0.1);
-    border: 1px solid green;
-    color: lightgreen;
-    padding: 12px;
-    margin: 20px 80px;
-    border-radius: 10px;
-    text-align: center;
+/* Astronaut Image */
+.right img {
+    width: 100%;
+    max-width: 520px;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 0 40px rgba(139,92,246,0.25),
+        0 0 80px rgba(99,102,241,0.15);
 }
 
-.error-msg {
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid red;
-    color: salmon;
-    padding: 12px;
-    margin: 20px 80px;
-    border-radius: 10px;
-    text-align: center;
+/* Messages */
+.success {
+    margin-top: 20px;
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.error {
+    margin-top: 20px;
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 992px) {
+
+    .container {
+        flex-direction: column;
+        padding: 40px 25px;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .left h1 {
+        font-size: 46px;
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .right img {
+        max-width: 400px;
+    }
 }
