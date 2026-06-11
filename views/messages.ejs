@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Messages</title>
 
     <link rel="stylesheet" href="/css/style.css">
 
     <style>
         body {
-            font-family: Arial;
             background: #0b0b1a;
             color: white;
+            font-family: Arial, sans-serif;
             padding: 40px;
         }
 
@@ -19,15 +20,28 @@
             margin-bottom: 30px;
         }
 
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        th, td {
-            padding: 12px;
+        th,
+        td {
             border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
             text-align: left;
         }
 
@@ -39,14 +53,23 @@
             background: rgba(255,255,255,0.08);
         }
 
-        .no-data {
-            text-align: center;
-            margin-top: 20px;
-            color: gray;
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        a {
-            color: #a855f7;
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .no-data {
+            text-align: center;
+            margin-top: 30px;
+            color: gray;
         }
     </style>
 </head>
@@ -55,32 +78,65 @@
 
     <h1>📩 Contact Messages</h1>
 
-    <a href="/">⬅ Back to Form</a>
+    <div class="top-links">
+        <a href="/">⬅ Back To Contact Form</a>
+    </div>
 
-    <% if (messages.length === 0) { %>
-        <p class="no-data">No messages found</p>
+    <% if(messages.length === 0){ %>
+
+        <p class="no-data">
+            No messages found.
+        </p>
+
     <% } else { %>
 
         <table>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Message</th>
-                <th>Date</th>
-            </tr>
 
-            <% messages.forEach(msg => { %>
+            <thead>
                 <tr>
-                    <td><%= msg.firstName %></td>
-                    <td><%= msg.lastName %></td>
-                    <td><%= msg.email %></td>
-                    <td><%= msg.phone %></td>
-                    <td><%= msg.message %></td>
-                    <td><%= msg.createdAt.toDateString() %></td>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Message</th>
+                    <th>Submitted On</th>
+                    <th>Action</th>
                 </tr>
-            <% }) %>
+            </thead>
+
+            <tbody>
+
+                <% messages.forEach((msg) => { %>
+
+                    <tr>
+                        <td><%= msg.firstName %></td>
+                        <td><%= msg.lastName %></td>
+                        <td><%= msg.email %></td>
+                        <td><%= msg.phone %></td>
+                        <td><%= msg.message %></td>
+
+                        <td>
+                            <%= new Date(msg.createdAt).toLocaleDateString() %>
+                        </td>
+
+                        <td>
+                            <form
+                                action="/messages/delete/<%= msg._id %>"
+                                method="POST"
+                            >
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                >
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
 
         </table>
 
