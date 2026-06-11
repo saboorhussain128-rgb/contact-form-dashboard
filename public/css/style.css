@@ -1,4 +1,6 @@
-/* Reset */
+/* =========================
+   RESET
+========================= */
 * {
     margin: 0;
     padding: 0;
@@ -10,46 +12,60 @@ body {
     background: radial-gradient(circle at center, #17173c, #060616);
     min-height: 100vh;
     color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Main Container */
+/* =========================
+   MAIN LAYOUT
+========================= */
 .container {
+    width: 90%;
     max-width: 1400px;
-    margin: 0 auto;
-    min-height: 100vh;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 60px 80px;
-    gap: 80px;
+    gap: 120px;
 }
 
-/* Left Section */
+/* =========================
+   LEFT SECTION
+========================= */
 .left {
     flex: 1;
-    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .left h1 {
-    font-size: 64px;
+    font-size: 70px;
     font-weight: 800;
-    margin-bottom: 35px;
+    margin-bottom: 40px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
     background: linear-gradient(90deg, #b066ff, #6d7cff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Form */
+/* =========================
+   FORM
+========================= */
 form {
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
 }
 
-/* Inputs */
+/* Inputs layout */
 input {
     width: calc(50% - 9px);
     height: 58px;
@@ -59,9 +75,9 @@ textarea {
     width: 100%;
     min-height: 180px;
     resize: none;
-    padding-top: 16px;
 }
 
+/* Shared input styles */
 input,
 textarea {
     background: rgba(255,255,255,0.06);
@@ -73,21 +89,29 @@ textarea {
     font-size: 16px;
 
     outline: none;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
+textarea {
+    padding-top: 16px;
+}
+
+/* Focus */
 input:focus,
 textarea:focus {
     border-color: #8b5cf6;
     box-shadow: 0 0 15px rgba(139,92,246,0.4);
 }
 
+/* Placeholder */
 input::placeholder,
 textarea::placeholder {
     color: rgba(255,255,255,0.55);
 }
 
-/* Button */
+/* =========================
+   BUTTON
+========================= */
 button {
     margin-top: 10px;
     padding: 16px 32px;
@@ -103,70 +127,75 @@ button {
 
     cursor: pointer;
     transition: 0.3s ease;
+
+    width: fit-content;
 }
 
 button:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
-/* Right Section */
+/* =========================
+   RIGHT SECTION
+========================= */
 .right {
     flex: 1;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Astronaut Image */
 .right img {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
 
-    border-radius: 24px;
+    transform: translateY(-25px);
 
-    box-shadow:
-        0 0 40px rgba(139,92,246,0.25),
-        0 0 80px rgba(99,102,241,0.15);
+    filter: drop-shadow(0 0 40px rgba(139,92,246,0.25));
 }
 
-/* Messages */
+/* =========================
+   MESSAGES
+========================= */
 .success {
-    margin-top: 20px;
+    margin-top: 15px;
     color: #22c55e;
     font-weight: 600;
 }
 
 .error {
-    margin-top: 20px;
+    margin-top: 15px;
     color: #ef4444;
     font-weight: 600;
 }
 
-/* Mobile */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 992px) {
 
     .container {
         flex-direction: column;
-        padding: 40px 25px;
-    }
-
-    .left,
-    .right {
-        width: 100%;
-        max-width: 100%;
+        gap: 60px;
+        text-align: center;
     }
 
     .left h1 {
-        font-size: 46px;
-        text-align: center;
+        font-size: 48px;
+        justify-content: center;
     }
 
     input {
         width: 100%;
     }
 
+    button {
+        width: 100%;
+    }
+
     .right img {
-        max-width: 400px;
+        max-width: 380px;
+        transform: none;
     }
 }
