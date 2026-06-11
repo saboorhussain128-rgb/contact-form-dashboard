@@ -1,6 +1,6 @@
 /**
  * Main Application Entry Point
- * Contact Form Project (Node + Express + MongoDB + EJS)
+ * Contact Form Project
  */
 
 const express = require("express");
@@ -8,92 +8,107 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-// =========================
-// CONFIG
-// =========================
+/**
+ * Configuration
+ */
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = "mongodb://127.0.0.1:27017/contact_form_db";
 
-// =========================
-// MIDDLEWARE
-// =========================
-app.use(express.static("public")); // CSS, images, JS
-app.use(express.urlencoded({ extended: true })); // form data parser
+/**
+ * Middleware
+ */
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
-// =========================
-// VIEW ENGINE
-// =========================
+/**
+ * View Engine
+ */
 app.set("view engine", "ejs");
 
-// =========================
-// DATABASE CONNECTION
-// =========================
+/**
+ * Database Connection
+ */
 mongoose
-    .connect(MONGO_URI)
-    .then(() => {
-        console.log("MongoDB connected successfully");
-    })
-    .catch((err) => {
-        console.log("MongoDB connection error:", err);
-    });
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected Successfully");
+  })
+  .catch((error) => {
+    console.log("❌ MongoDB Connection Error:", error);
+  });
 
-// =========================
-// MODEL
-// =========================
+/**
+ * Model
+ */
 const Contact = require("./models/Contact");
 
-// =========================
-// ROUTES
-// =========================
-
 /**
- * Home Page (Contact Form)
+ * Home Page
  */
 app.get("/", (req, res) => {
-    res.render("index", {
-        success: req.query.success
-    });
+  res.render("index", {
+    success: req.query.success,
+  });
 });
 
 /**
- * Handle Contact Form Submission
+ * Save Contact Form
  */
 app.post("/contact", async (req, res) => {
-    try {
-        const contactData = new Contact(req.body);
-        await contactData.save();
+  try {
+    const contactData = new Contact(req.body);
 
-        console.log("Saved Data:", contactData);
+    await contactData.save();
 
-        // redirect with success message
-        res.redirect("/?success=true");
+    console.log("📩 Message Saved Successfully");
 
-    } catch (error) {
-        console.log("Error saving data:", error);
-        res.redirect("/?success=false");
-    }
+    res.redirect("/?success=true");
+  } catch (error) {
+    console.log("Save Error:", error);
+
+    res.redirect("/?success=false");
+  }
 });
 
 /**
- * Admin Page - View All Messages
+ * View All Messages
  */
 app.get("/messages", async (req, res) => {
-    try {
-        const messages = await Contact.find().sort({ createdAt: -1 });
+  try {
+    const messages = await Contact.find().sort({
+      createdAt: -1,
+    });
 
-        res.render("messages", {
-            messages: messages
-        });
+    res.render("messages", {
+      messages,
+    });
+  } catch (error) {
+    console.log("Fetch Error:", error);
 
-    } catch (error) {
-        console.log("Error fetching messages:", error);
-        res.send("Error loading messages");
-    }
+    res.send("Error loading messages");
+  }
 });
 
-// =========================
-// START SERVER
-// =========================
+/**
+ * Delete Message
+ */
+app.post("/messages/delete/:id", async (req, res) => {
+  try {
+    await Contact.findByIdAndDelete(req.params.id);
+
+    console.log("🗑️ Message Deleted");
+
+    res.redirect("/messages");
+  } catch (error) {
+    console.log("Delete Error:", error);
+
+    res.send("Failed to delete message");
+  }
+});
+
+/**
+ * Start Server
+ */
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
