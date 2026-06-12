@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
   res.render("index", {
     success: req.query.success,
     error: null,
+    formData: {},
   });
 });
 
@@ -19,28 +20,38 @@ router.get("/", (req, res) => {
 router.post("/contact", async (req, res) => {
   try {
     // Extract form data from request body
-    const { firstName, lastName, email, message } = req.body;
+    const { firstName, lastName, email, phone, message } = req.body;
 
     /**
      * Server-side validation
-     * Check if any required field is empty
      */
-    if (!firstName || !lastName || !email || !message) {
+    if (
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !message.trim()
+    ) {
       return res.render("index", {
         success: false,
         error: "All fields are required.",
+        formData: req.body,
       });
     }
 
-    // Create new contact document
+    /**
+     * Create new contact document
+     */
     const contactData = new Contact({
       firstName,
       lastName,
       email,
+      phone,
       message,
     });
 
-    // Save to MongoDB
+    /**
+     * Save to MongoDB
+     */
     await contactData.save();
 
     console.log("📩 Message Saved Successfully");

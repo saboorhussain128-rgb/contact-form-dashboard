@@ -8,7 +8,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background: radial-gradient(circle at center, #17173c, #060616);
     min-height: 100vh;
     color: white;
@@ -80,8 +80,8 @@ textarea {
 /* Shared input styles */
 input,
 textarea {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
 
     color: white;
@@ -96,17 +96,17 @@ textarea {
     padding-top: 16px;
 }
 
-/* Focus */
+/* Focus State */
 input:focus,
 textarea:focus {
     border-color: #8b5cf6;
-    box-shadow: 0 0 15px rgba(139,92,246,0.4);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
 }
 
 /* Placeholder */
 input::placeholder,
 textarea::placeholder {
-    color: rgba(255,255,255,0.55);
+    color: rgba(255, 255, 255, 0.55);
 }
 
 /* =========================
@@ -133,7 +133,7 @@ button {
 
 button:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 /* =========================
@@ -152,7 +152,7 @@ button:hover {
 
     transform: translateY(-25px);
 
-    filter: drop-shadow(0 0 40px rgba(139,92,246,0.25));
+    filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.25));
 }
 
 /* =========================
@@ -170,15 +170,10 @@ button:hover {
     font-weight: 600;
 }
 
-<% if (error) { %>
-    <p class="error"><%= error %></p>
-<% } %>
-
 /* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 992px) {
-
     .container {
         flex-direction: column;
         gap: 60px;
