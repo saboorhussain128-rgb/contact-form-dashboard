@@ -83,8 +83,6 @@ exports.getMessages = async (req, res) => {
       currentPage: page,
       totalPages: Math.ceil(totalMessages / limit),
       totalMessages,
-
-      // ✅ NEW: pass query to EJS for success/error messages
       query: req.query,
     });
 
@@ -110,5 +108,63 @@ exports.deleteMessage = async (req, res) => {
   } catch (error) {
     console.log("Delete Error:", error);
     return res.redirect("/messages?error=server");
+  }
+};
+
+/**
+ * =========================
+ * ✏️ EDIT FEATURE (NEW)
+ * =========================
+ */
+
+/**
+ * Show Edit Page
+ */
+exports.getEditMessage = async (req, res) => {
+  try {
+    const message = await Contact.findById(req.params.id);
+
+    if (!message) {
+      return res.redirect("/messages?error=notfound");
+    }
+
+    res.render("editMessage", {
+      message
+    });
+
+  } catch (error) {
+    console.log("Edit Page Error:", error);
+    res.redirect("/messages?error=server");
+  }
+};
+
+/**
+ * Update Message
+ */
+exports.updateMessage = async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, message } = req.body;
+
+    const updated = await Contact.findByIdAndUpdate(
+      req.params.id,
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        message,
+      },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.redirect("/messages?error=notfound");
+    }
+
+    res.redirect("/messages?updated=true");
+
+  } catch (error) {
+    console.log("Update Error:", error);
+    res.redirect("/messages?error=server");
   }
 };
