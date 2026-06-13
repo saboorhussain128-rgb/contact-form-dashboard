@@ -1,0 +1,15 @@
+<% if (query?.deleted) { %>
+    <div class="toast success">✅ Message deleted successfully</div>
+<% } %>
+
+<% if (query?.updated) { %>
+    <div class="toast success">✏️ Message updated successfully</div>
+<% } %>
+
+<% if (query?.error === 'notfound') { %>
+    <div class="toast error">❌ Message not found</div>
+<% } %>
+
+<% if (query?.error === 'server') { %>
+    <div class="toast error">⚠️ Server error occurred</div>
+<% } %>
