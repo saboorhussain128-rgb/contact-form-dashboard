@@ -49,7 +49,7 @@ exports.submitContact = async (req, res) => {
 };
 
 /**
- * Get Messages Page (SEARCH + PAGINATION)
+ * Get Messages Page (SEARCH + PAGINATION + STATS FIXED)
  */
 exports.getMessages = async (req, res) => {
   try {
@@ -77,6 +77,33 @@ exports.getMessages = async (req, res) => {
 
     const totalMessages = await Contact.countDocuments(query);
 
+    /**
+     * ✅ DASHBOARD STATS (FIX FOR "stats is not defined")
+     */
+    const now = new Date();
+
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - 7);
+
+    const startOfMonth = new Date(now);
+    startOfMonth.setMonth(now.getMonth() - 1);
+
+    const stats = {
+      total: await Contact.countDocuments(),
+      today: await Contact.countDocuments({
+        createdAt: { $gte: startOfToday },
+      }),
+      week: await Contact.countDocuments({
+        createdAt: { $gte: startOfWeek },
+      }),
+      month: await Contact.countDocuments({
+        createdAt: { $gte: startOfMonth },
+      }),
+    };
+
     res.render("messages", {
       messages,
       search,
@@ -84,6 +111,7 @@ exports.getMessages = async (req, res) => {
       totalPages: Math.ceil(totalMessages / limit),
       totalMessages,
       query: req.query,
+      stats, // ✅ IMPORTANT FIX
     });
 
   } catch (error) {
@@ -93,7 +121,7 @@ exports.getMessages = async (req, res) => {
 };
 
 /**
- * Delete Message (IMPROVED)
+ * Delete Message
  */
 exports.deleteMessage = async (req, res) => {
   try {
@@ -112,12 +140,6 @@ exports.deleteMessage = async (req, res) => {
 };
 
 /**
- * =========================
- * ✏️ EDIT FEATURE (NEW)
- * =========================
- */
-
-/**
  * Show Edit Page
  */
 exports.getEditMessage = async (req, res) => {
@@ -129,7 +151,7 @@ exports.getEditMessage = async (req, res) => {
     }
 
     res.render("editMessage", {
-      message
+      message,
     });
 
   } catch (error) {
