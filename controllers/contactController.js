@@ -18,7 +18,6 @@ exports.submitContact = async (req, res) => {
   try {
     const { firstName, lastName, email, phone, message } = req.body;
 
-    // Validation
     if (
       !firstName?.trim() ||
       !lastName?.trim() ||
@@ -50,7 +49,7 @@ exports.submitContact = async (req, res) => {
 };
 
 /**
- * Get Messages Page (SEARCH + PAGINATION + STATS)
+ * Get Messages Page (SEARCH + PAGINATION)
  */
 exports.getMessages = async (req, res) => {
   try {
@@ -60,15 +59,16 @@ exports.getMessages = async (req, res) => {
     const limit = 5;
     const skip = (page - 1) * limit;
 
-    // Search filter
-    const query = {
-      $or: [
-        { firstName: { $regex: search, $options: "i" } },
-        { lastName: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { message: { $regex: search, $options: "i" } },
-      ],
-    };
+    const query = search
+      ? {
+          $or: [
+            { firstName: { $regex: search, $options: "i" } },
+            { lastName: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { message: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
 
     const messages = await Contact.find(query)
       .sort({ createdAt: -1 })
@@ -84,7 +84,6 @@ exports.getMessages = async (req, res) => {
       totalPages: Math.ceil(totalMessages / limit),
       totalMessages,
     });
-
   } catch (error) {
     console.log("Fetch Error:", error);
     res.send("Error loading messages");
