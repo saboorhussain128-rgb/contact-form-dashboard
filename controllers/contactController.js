@@ -83,7 +83,11 @@ exports.getMessages = async (req, res) => {
       currentPage: page,
       totalPages: Math.ceil(totalMessages / limit),
       totalMessages,
+
+      // ✅ NEW: pass query to EJS for success/error messages
+      query: req.query,
     });
+
   } catch (error) {
     console.log("Fetch Error:", error);
     res.send("Error loading messages");
@@ -91,14 +95,20 @@ exports.getMessages = async (req, res) => {
 };
 
 /**
- * Delete Message
+ * Delete Message (IMPROVED)
  */
 exports.deleteMessage = async (req, res) => {
   try {
-    await Contact.findByIdAndDelete(req.params.id);
-    res.redirect("/messages");
+    const deleted = await Contact.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return res.redirect("/messages?error=notfound");
+    }
+
+    return res.redirect("/messages?deleted=true");
+
   } catch (error) {
     console.log("Delete Error:", error);
-    res.send("Failed to delete message");
+    return res.redirect("/messages?error=server");
   }
 };
