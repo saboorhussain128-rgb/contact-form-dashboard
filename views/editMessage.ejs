@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Message</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<h1>Edit Message ✏️</h1>
+
+<form action="/messages/edit/<%= message._id %>" method="POST">
+
+    <input type="text" name="firstName" value="<%= message.firstName %>" required>
+    <input type="text" name="lastName" value="<%= message.lastName %>" required>
+    <input type="email" name="email" value="<%= message.email %>" required>
+    <input type="text" name="phone" value="<%= message.phone %>">
+    
+    <textarea name="message" required><%= message.message %></textarea>
+
+    <button type="submit">Update</button>
+
+</form>
+
+<br>
+
+<a href="/messages">⬅ Back</a>
+
+</body>
+</html>
