@@ -98,4 +98,28 @@ router.post(
   contactController.deleteMessage
 );
 
+/**
+ * ================================
+ * ✏️ EDIT MESSAGE ROUTES (NEW)
+ * ================================
+ */
+
+/**
+ * Show Edit Page
+ */
+router.get(
+  "/messages/edit/:id",
+  isAuth,
+  contactController.getEditMessage
+);
+
+/**
+ * Update Message
+ */
+router.post(
+  "/messages/edit/:id",
+  isAuth,
+  contactController.updateMessage
+);
+
 module.exports = router;
