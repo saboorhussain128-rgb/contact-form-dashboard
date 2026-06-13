@@ -20,10 +20,10 @@ exports.submitContact = async (req, res) => {
 
     // Validation
     if (
-      !firstName.trim() ||
-      !lastName.trim() ||
-      !email.trim() ||
-      !message.trim()
+      !firstName?.trim() ||
+      !lastName?.trim() ||
+      !email?.trim() ||
+      !message?.trim()
     ) {
       return res.render("index", {
         success: false,
@@ -50,15 +50,41 @@ exports.submitContact = async (req, res) => {
 };
 
 /**
- * Get Messages Page
+ * Get Messages Page (SEARCH + PAGINATION + STATS)
  */
 exports.getMessages = async (req, res) => {
   try {
-    const messages = await Contact.find().sort({ createdAt: -1 });
+    const search = req.query.search || "";
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
+
+    // Search filter
+    const query = {
+      $or: [
+        { firstName: { $regex: search, $options: "i" } },
+        { lastName: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { message: { $regex: search, $options: "i" } },
+      ],
+    };
+
+    const messages = await Contact.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalMessages = await Contact.countDocuments(query);
 
     res.render("messages", {
       messages,
+      search,
+      currentPage: page,
+      totalPages: Math.ceil(totalMessages / limit),
+      totalMessages,
     });
+
   } catch (error) {
     console.log("Fetch Error:", error);
     res.send("Error loading messages");
@@ -71,18 +97,9 @@ exports.getMessages = async (req, res) => {
 exports.deleteMessage = async (req, res) => {
   try {
     await Contact.findByIdAndDelete(req.params.id);
-
     res.redirect("/messages");
   } catch (error) {
     console.log("Delete Error:", error);
     res.send("Failed to delete message");
   }
-};
-
-exports.deleteMessage = async (req, res) => {
-  console.log("🔥 DELETE ROUTE HIT:", req.params.id);
-
-  await Contact.findByIdAndDelete(req.params.id);
-
-  res.redirect("/messages");
 };
