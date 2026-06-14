@@ -1,7 +1,7 @@
 const Contact = require("../models/Contact");
 
 /**
- * Show Contact Page
+ * Home Page
  */
 exports.getHome = (req, res) => {
   res.render("index", {
@@ -18,20 +18,15 @@ exports.submitContact = async (req, res) => {
   try {
     const { firstName, lastName, email, phone, message } = req.body;
 
-    if (
-      !firstName?.trim() ||
-      !lastName?.trim() ||
-      !email?.trim() ||
-      !message?.trim()
-    ) {
+    if (!firstName || !lastName || !email || !message) {
       return res.render("index", {
         success: false,
-        error: "All fields are required.",
+        error: "All fields are required",
         formData: req.body,
       });
     }
 
-    const contact = new Contact({
+    await Contact.create({
       firstName,
       lastName,
       email,
@@ -39,25 +34,21 @@ exports.submitContact = async (req, res) => {
       message,
     });
 
-    await contact.save();
-
     res.redirect("/?success=true");
-  } catch (error) {
-    console.log("Save Error:", error);
+  } catch (err) {
+    console.log(err);
     res.redirect("/?success=false");
   }
 };
 
 /**
- * Get Messages Page
+ * Messages Dashboard (WITH STATS + SAFE QUERY)
  */
 exports.getMessages = async (req, res) => {
   try {
     const search = req.query.search || "";
-
     const page = parseInt(req.query.page) || 1;
     const limit = 5;
-    const skip = (page - 1) * limit;
 
     const query = search
       ? {
@@ -72,21 +63,21 @@ exports.getMessages = async (req, res) => {
 
     const messages = await Contact.find(query)
       .sort({ createdAt: -1 })
-      .skip(skip)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     const totalMessages = await Contact.countDocuments(query);
 
-    // Dashboard Stats
+    // ---------- SAFE STATS ----------
     const now = new Date();
 
-    const startOfToday = new Date();
+    const startOfToday = new Date(now);
     startOfToday.setHours(0, 0, 0, 0);
 
-    const startOfWeek = new Date();
+    const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - 7);
 
-    const startOfMonth = new Date();
+    const startOfMonth = new Date(now);
     startOfMonth.setMonth(now.getMonth() - 1);
 
     const stats = {
@@ -105,39 +96,19 @@ exports.getMessages = async (req, res) => {
     res.render("messages", {
       messages,
       search,
+      totalMessages,
       currentPage: page,
       totalPages: Math.ceil(totalMessages / limit),
-      totalMessages,
-      stats,
-      query: req.query,
+
+      stats: stats || {},
+
+      // ✅ VERY IMPORTANT FIX (prevents toast crash)
+      query: req.query || {},
     });
-  } catch (error) {
-    console.log("Fetch Error:", error);
+
+  } catch (err) {
+    console.log(err);
     res.send("Error loading messages");
-  }
-};
-
-/**
- * View Single Message + Mark As Read
- */
-exports.getMessageDetail = async (req, res) => {
-  try {
-    const message = await Contact.findById(req.params.id);
-
-    if (!message) {
-      return res.redirect("/messages?error=notfound");
-    }
-
-    // Mark as read
-    message.isRead = true;
-    await message.save();
-
-    res.render("messageDetail", {
-      message,
-    });
-  } catch (error) {
-    console.log("Message Detail Error:", error);
-    res.redirect("/messages");
   }
 };
 
@@ -146,35 +117,26 @@ exports.getMessageDetail = async (req, res) => {
  */
 exports.deleteMessage = async (req, res) => {
   try {
-    const deleted = await Contact.findByIdAndDelete(req.params.id);
-
-    if (!deleted) {
-      return res.redirect("/messages?error=notfound");
-    }
-
+    await Contact.findByIdAndDelete(req.params.id);
     res.redirect("/messages?deleted=true");
-  } catch (error) {
-    console.log("Delete Error:", error);
-    res.redirect("/messages?error=server");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/messages?error=delete");
   }
 };
 
 /**
- * Show Edit Page
+ * Edit Page
  */
 exports.getEditMessage = async (req, res) => {
   try {
     const message = await Contact.findById(req.params.id);
 
-    if (!message) {
-      return res.redirect("/messages?error=notfound");
-    }
+    if (!message) return res.redirect("/messages?error=notfound");
 
-    res.render("editMessage", {
-      message,
-    });
-  } catch (error) {
-    console.log("Edit Page Error:", error);
+    res.render("editMessage", { message });
+  } catch (err) {
+    console.log(err);
     res.redirect("/messages?error=server");
   }
 };
@@ -184,27 +146,26 @@ exports.getEditMessage = async (req, res) => {
  */
 exports.updateMessage = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, message } = req.body;
-
-    const updated = await Contact.findByIdAndUpdate(
-      req.params.id,
-      {
-        firstName,
-        lastName,
-        email,
-        phone,
-        message,
-      },
-      { new: true }
-    );
-
-    if (!updated) {
-      return res.redirect("/messages?error=notfound");
-    }
-
+    await Contact.findByIdAndUpdate(req.params.id, req.body);
     res.redirect("/messages?updated=true");
-  } catch (error) {
-    console.log("Update Error:", error);
+  } catch (err) {
+    console.log(err);
+    res.redirect("/messages?error=update");
+  }
+};
+
+/**
+ * Message Detail Page
+ */
+exports.getMessageDetail = async (req, res) => {
+  try {
+    const message = await Contact.findById(req.params.id);
+
+    if (!message) return res.redirect("/messages?error=notfound");
+
+    res.render("messageDetail", { message });
+  } catch (err) {
+    console.log(err);
     res.redirect("/messages?error=server");
   }
 };
