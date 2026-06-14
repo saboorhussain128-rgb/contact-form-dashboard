@@ -118,6 +118,30 @@ exports.getMessages = async (req, res) => {
 };
 
 /**
+ * View Single Message + Mark As Read
+ */
+exports.getMessageDetail = async (req, res) => {
+  try {
+    const message = await Contact.findById(req.params.id);
+
+    if (!message) {
+      return res.redirect("/messages?error=notfound");
+    }
+
+    // Mark as read
+    message.isRead = true;
+    await message.save();
+
+    res.render("messageDetail", {
+      message,
+    });
+  } catch (error) {
+    console.log("Message Detail Error:", error);
+    res.redirect("/messages");
+  }
+};
+
+/**
  * Delete Message
  */
 exports.deleteMessage = async (req, res) => {

@@ -11,6 +11,13 @@ const contactSchema = new mongoose.Schema({
     email: String,
     phone: String,
     message: String,
+
+    // Read / Unread Status
+    isRead: {
+        type: Boolean,
+        default: false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

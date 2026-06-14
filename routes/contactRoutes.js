@@ -80,7 +80,6 @@ router.get("/logout", (req, res) => {
 
 /**
  * Messages Dashboard
- * Protected Route
  */
 router.get(
   "/messages",
@@ -90,7 +89,6 @@ router.get(
 
 /**
  * Delete Message
- * Protected Route
  */
 router.post(
   "/messages/delete/:id",
@@ -99,13 +97,7 @@ router.post(
 );
 
 /**
- * ================================
- * ✏️ EDIT MESSAGE ROUTES (NEW)
- * ================================
- */
-
-/**
- * Show Edit Page
+ * Edit Message Page
  */
 router.get(
   "/messages/edit/:id",
