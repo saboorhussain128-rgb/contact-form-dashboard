@@ -1,15 +1,17 @@
-<% if (query?.deleted) { %>
+<% const q = typeof query !== "undefined" ? query : {}; %>
+
+<% if (q.deleted) { %>
     <div class="toast success">✅ Message deleted successfully</div>
 <% } %>
 
-<% if (query?.updated) { %>
+<% if (q.updated) { %>
     <div class="toast success">✏️ Message updated successfully</div>
 <% } %>
 
-<% if (query?.error === 'notfound') { %>
+<% if (q.error === "notfound") { %>
     <div class="toast error">❌ Message not found</div>
 <% } %>
 
-<% if (query?.error === 'server') { %>
+<% if (q.error === "server") { %>
     <div class="toast error">⚠️ Server error occurred</div>
 <% } %>

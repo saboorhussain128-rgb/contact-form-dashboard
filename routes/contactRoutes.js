@@ -4,91 +4,74 @@ const router = express.Router();
 const contactController = require("../controllers/contactController");
 
 /**
- * Authentication Middleware
- * Protects admin routes
+ * AUTH MIDDLEWARE
  */
 function isAuth(req, res, next) {
-  if (req.session.isAuth) {
-    return next();
-  }
-
-  res.redirect("/login");
+  if (req.session.isAuth) return next();
+  return res.redirect("/login");
 }
 
 /**
- * Home Page
+ * HOME PAGE (CONTACT FORM)
  */
 router.get("/", contactController.getHome);
 
 /**
- * Submit Contact Form
+ * SUBMIT CONTACT FORM
  */
 router.post("/contact", contactController.submitContact);
 
 /**
- * Login Page
+ * LOGIN PAGE
  */
 router.get("/login", (req, res) => {
-  res.render("login", {
-    error: null,
-  });
+  res.render("login", { error: null });
 });
 
 /**
- * Handle Login
+ * LOGIN HANDLER
  */
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  console.log("========== LOGIN DEBUG ==========");
-  console.log("Entered Username:", username);
-  console.log("Entered Password:", password);
-  console.log("ENV Username:", process.env.ADMIN_USER);
-  console.log("ENV Password:", process.env.ADMIN_PASS);
-  console.log("=================================");
+  // Debug logs (optional)
+  console.log("LOGIN ATTEMPT:");
+  console.log(username, password);
 
   if (
     username === process.env.ADMIN_USER &&
     password === process.env.ADMIN_PASS
   ) {
     req.session.isAuth = true;
-
-    console.log("✅ Login Success");
-
     return res.redirect("/messages");
   }
 
-  console.log("❌ Login Failed");
-
-  res.render("login", {
+  return res.render("login", {
     error: "Invalid credentials",
   });
 });
 
 /**
- * Logout
+ * LOGOUT
  */
 router.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-    }
-
+  req.session.destroy(() => {
     res.redirect("/login");
   });
 });
 
 /**
- * Messages Dashboard
+ * MESSAGES DASHBOARD (PROTECTED)
  */
-router.get(
-  "/messages",
-  isAuth,
-  contactController.getMessages
-);
+router.get("/messages", isAuth, contactController.getMessages);
 
 /**
- * Delete Message
+ * MESSAGE DETAIL PAGE (PROTECTED)
+ */
+router.get("/messages/:id", isAuth, contactController.getMessageDetail);
+
+/**
+ * DELETE MESSAGE (PROTECTED)
  */
 router.post(
   "/messages/delete/:id",
@@ -97,7 +80,7 @@ router.post(
 );
 
 /**
- * Edit Message Page
+ * EDIT MESSAGE PAGE (PROTECTED)
  */
 router.get(
   "/messages/edit/:id",
@@ -106,7 +89,7 @@ router.get(
 );
 
 /**
- * Update Message
+ * UPDATE MESSAGE (PROTECTED)
  */
 router.post(
   "/messages/edit/:id",
