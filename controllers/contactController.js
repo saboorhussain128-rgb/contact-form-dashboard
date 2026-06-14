@@ -49,7 +49,7 @@ exports.submitContact = async (req, res) => {
 };
 
 /**
- * Get Messages Page (SEARCH + PAGINATION + STATS FIXED)
+ * Get Messages Page
  */
 exports.getMessages = async (req, res) => {
   try {
@@ -77,18 +77,16 @@ exports.getMessages = async (req, res) => {
 
     const totalMessages = await Contact.countDocuments(query);
 
-    /**
-     * ✅ DASHBOARD STATS (FIX FOR "stats is not defined")
-     */
+    // Dashboard Stats
     const now = new Date();
 
-    const startOfToday = new Date(now);
+    const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
-    const startOfWeek = new Date(now);
+    const startOfWeek = new Date();
     startOfWeek.setDate(now.getDate() - 7);
 
-    const startOfMonth = new Date(now);
+    const startOfMonth = new Date();
     startOfMonth.setMonth(now.getMonth() - 1);
 
     const stats = {
@@ -110,10 +108,9 @@ exports.getMessages = async (req, res) => {
       currentPage: page,
       totalPages: Math.ceil(totalMessages / limit),
       totalMessages,
+      stats,
       query: req.query,
-      stats, // ✅ IMPORTANT FIX
     });
-
   } catch (error) {
     console.log("Fetch Error:", error);
     res.send("Error loading messages");
@@ -131,11 +128,10 @@ exports.deleteMessage = async (req, res) => {
       return res.redirect("/messages?error=notfound");
     }
 
-    return res.redirect("/messages?deleted=true");
-
+    res.redirect("/messages?deleted=true");
   } catch (error) {
     console.log("Delete Error:", error);
-    return res.redirect("/messages?error=server");
+    res.redirect("/messages?error=server");
   }
 };
 
@@ -153,7 +149,6 @@ exports.getEditMessage = async (req, res) => {
     res.render("editMessage", {
       message,
     });
-
   } catch (error) {
     console.log("Edit Page Error:", error);
     res.redirect("/messages?error=server");
@@ -184,7 +179,6 @@ exports.updateMessage = async (req, res) => {
     }
 
     res.redirect("/messages?updated=true");
-
   } catch (error) {
     console.log("Update Error:", error);
     res.redirect("/messages?error=server");
