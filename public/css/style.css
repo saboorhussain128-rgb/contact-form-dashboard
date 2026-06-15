@@ -564,3 +564,625 @@ button:hover {
 .cancel-btn:hover {
     background: #4b5563;
 }
+
+/* =========================
+   NEW UI FIX (MATCH IMAGE 2)
+========================= */
+
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+.glass-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 60px;
+
+    width: 100%;
+    max-width: 1200px;
+
+    padding: 50px;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* LEFT */
+.left h1 {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+.left h1 span {
+    color: #a855f7;
+}
+
+.subtitle {
+    margin-bottom: 25px;
+    color: rgba(255,255,255,0.7);
+}
+
+/* FORM */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.row input {
+    flex: 1;
+}
+
+input, textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+}
+
+textarea {
+    min-height: 140px;
+    resize: none;
+}
+
+/* BUTTON */
+button {
+    background: linear-gradient(90deg,#a855f7,#6366f1);
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* RIGHT IMAGE */
+.right img {
+    width: 420px;
+    filter: drop-shadow(0 0 40px rgba(168,85,247,0.3));
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .glass-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .right img {
+        width: 300px;
+    }
+}
+
+/* =========================
+   ULTRA MODERN DASHBOARD UI
+========================= */
+
+.dashboard-wrapper {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* HEADER */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.dashboard-header h1 {
+    font-size: 32px;
+    background: linear-gradient(90deg, #a855f7, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn.ghost {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.btn.danger {
+    background: #ef4444;
+    color: white;
+}
+
+/* STATS */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.stat h2 {
+    font-size: 28px;
+    color: #a855f7;
+}
+
+/* SEARCH */
+.search-box form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.06);
+    color: white;
+}
+
+.search-box button {
+    background: #6366f1;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit {
+    background: #3b82f6;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.delete {
+    background: #ef4444;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* MESSAGE */
+.msg {
+    margin-top: 10px;
+    opacity: 0.85;
+}
+
+/* TIME */
+.time {
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.page {
+    padding: 8px 12px;
+    margin: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+}
+
+.page.active {
+    background: #a855f7;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #111827;
+    padding: 25px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* COMMON BUTTON STYLE (IMPORTANT FIX) */
+.action-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s ease;
+}
+
+/* EDIT */
+.edit-btn {
+    background: #3b82f6;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #2563eb;
+}
+
+/* DELETE */
+.delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+/* =========================
+   MODERN UI RESET + BASE
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+    background: #0a0a12;
+    color: #e5e7eb;
+    min-height: 100vh;
+}
+
+/* =========================
+   DASHBOARD WRAPPER
+========================= */
+.dashboard-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+/* =========================
+   HEADER
+========================= */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(90deg,#a855f7,#6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.top-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* =========================
+   BUTTON SYSTEM (FIXED)
+========================= */
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Variants */
+.btn.ghost {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+
+.btn.danger {
+    background: #ef4444;
+    color: white;
+}
+
+/* FIXED ACTION BUTTONS */
+.edit-btn {
+    background: linear-gradient(90deg,#3b82f6,#2563eb);
+    color: white;
+}
+
+.delete-btn {
+    background: linear-gradient(90deg,#ef4444,#dc2626);
+    color: white;
+}
+
+/* =========================
+   STATS GRID
+========================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.2s;
+}
+
+.stat:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.07);
+}
+
+.stat h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.stat p {
+    color: rgba(255,255,255,0.6);
+}
+
+/* =========================
+   SEARCH
+========================= */
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-box form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    width: 300px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    outline: none;
+}
+
+.search-box button {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    background: #8b5cf6;
+    color: white;
+    cursor: pointer;
+}
+
+/* =========================
+   META TEXT
+========================= */
+.meta {
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgba(255,255,255,0.6);
+}
+
+/* =========================
+   GRID CARDS
+========================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 18px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px;
+    border-radius: 16px;
+    transition: 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.07);
+}
+
+/* CARD TOP */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* ACTIONS FIX */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* INFO */
+.info p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin: 4px 0;
+}
+
+/* MESSAGE */
+.msg {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e5e7eb;
+}
+
+/* TIME */
+.time {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+}
+
+/* =========================
+   PAGINATION
+========================= */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 6px;
+}
+
+.page {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: white;
+    text-decoration: none;
+}
+
+.page.active {
+    background: #8b5cf6;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty {
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    padding: 40px;
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #141422;
+    padding: 25px;
+    border-radius: 14px;
+    width: 350px;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}

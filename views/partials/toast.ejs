@@ -1,17 +1,17 @@
-<% const q = typeof query !== "undefined" ? query : {}; %>
+<% const q = query || {}; %>
 
-<% if (q.deleted) { %>
-    <div class="toast success">✅ Message deleted successfully</div>
-<% } %>
+<% const toast =
+    q.deleted ? { type: "success", msg: "Message deleted successfully" } :
+    q.updated ? { type: "success", msg: "Message updated successfully" } :
+    q.error === "notfound" ? { type: "error", msg: "Message not found" } :
+    q.error === "server" ? { type: "error", msg: "Server error occurred" } :
+    q.error === "delete" ? { type: "error", msg: "Failed to delete message" } :
+    q.error === "update" ? { type: "error", msg: "Failed to update message" } :
+    null;
+%>
 
-<% if (q.updated) { %>
-    <div class="toast success">✏️ Message updated successfully</div>
-<% } %>
-
-<% if (q.error === "notfound") { %>
-    <div class="toast error">❌ Message not found</div>
-<% } %>
-
-<% if (q.error === "server") { %>
-    <div class="toast error">⚠️ Server error occurred</div>
+<% if (toast) { %>
+    <div class="toast <%= toast.type %>">
+        <%= toast.msg %>
+    </div>
 <% } %>

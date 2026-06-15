@@ -36,13 +36,13 @@ exports.submitContact = async (req, res) => {
 
     res.redirect("/?success=true");
   } catch (err) {
-    console.log(err);
+    console.log("Save Error:", err);
     res.redirect("/?success=false");
   }
 };
 
 /**
- * Messages Dashboard (WITH STATS + SAFE QUERY)
+ * Messages Dashboard
  */
 exports.getMessages = async (req, res) => {
   try {
@@ -68,7 +68,6 @@ exports.getMessages = async (req, res) => {
 
     const totalMessages = await Contact.countDocuments(query);
 
-    // ---------- SAFE STATS ----------
     const now = new Date();
 
     const startOfToday = new Date(now);
@@ -99,15 +98,11 @@ exports.getMessages = async (req, res) => {
       totalMessages,
       currentPage: page,
       totalPages: Math.ceil(totalMessages / limit),
-
-      stats: stats || {},
-
-      // ✅ VERY IMPORTANT FIX (prevents toast crash)
+      stats,
       query: req.query || {},
     });
-
   } catch (err) {
-    console.log(err);
+    console.log("Fetch Error:", err);
     res.send("Error loading messages");
   }
 };
@@ -118,25 +113,30 @@ exports.getMessages = async (req, res) => {
 exports.deleteMessage = async (req, res) => {
   try {
     await Contact.findByIdAndDelete(req.params.id);
+
     res.redirect("/messages?deleted=true");
   } catch (err) {
-    console.log(err);
+    console.log("Delete Error:", err);
     res.redirect("/messages?error=delete");
   }
 };
 
 /**
- * Edit Page
+ * Edit Message Page
  */
 exports.getEditMessage = async (req, res) => {
   try {
     const message = await Contact.findById(req.params.id);
 
-    if (!message) return res.redirect("/messages?error=notfound");
+    if (!message) {
+      return res.redirect("/messages?error=notfound");
+    }
 
-    res.render("editMessage", { message });
+    res.render("editMessage", {
+      message,
+    });
   } catch (err) {
-    console.log(err);
+    console.log("Edit Error:", err);
     res.redirect("/messages?error=server");
   }
 };
@@ -147,25 +147,30 @@ exports.getEditMessage = async (req, res) => {
 exports.updateMessage = async (req, res) => {
   try {
     await Contact.findByIdAndUpdate(req.params.id, req.body);
+
     res.redirect("/messages?updated=true");
   } catch (err) {
-    console.log(err);
+    console.log("Update Error:", err);
     res.redirect("/messages?error=update");
   }
 };
 
 /**
- * Message Detail Page
+ * View Single Message
  */
 exports.getMessageDetail = async (req, res) => {
   try {
     const message = await Contact.findById(req.params.id);
 
-    if (!message) return res.redirect("/messages?error=notfound");
+    if (!message) {
+      return res.redirect("/messages?error=notfound");
+    }
 
-    res.render("messageDetail", { message });
+    res.render("messageDetail", {
+      message,
+    });
   } catch (err) {
-    console.log(err);
+    console.log("Detail Error:", err);
     res.redirect("/messages?error=server");
   }
 };

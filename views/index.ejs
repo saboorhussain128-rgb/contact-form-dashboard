@@ -2,109 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contact Mission</title>
+    <title>Get in touch</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<!-- IMPORTANT FIX: contact-page class added -->
 <body class="contact-page">
 
-    <div class="container">
+<div class="page-wrapper">
 
-        <!-- LEFT SIDE -->
+    <div class="glass-card">
+
+        <!-- LEFT -->
         <div class="left">
 
-            <h1>Contact Us 🚀</h1>
+            <h1>Get in <span>touch</span></h1>
+
+            <p class="subtitle">
+                Reach out and let’s create something amazing together.
+            </p>
 
             <form action="/contact" method="POST">
 
-                <!-- First Name -->
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value="<%= formData.firstName || '' %>"
-                    required
-                >
-
-                <!-- Last Name -->
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value="<%= formData.lastName || '' %>"
-                    required
-                >
-
-                <!-- Email -->
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value="<%= formData.email || '' %>"
-                    required
-                >
-
-                <!-- Phone -->
-                <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone"
-                    value="<%= formData.phone || '' %>"
-                >
-
-                <!-- Message -->
-                <textarea
-                    id="message"
-                    name="message"
-                    placeholder="Your Message"
-                    maxlength="500"
-                    required
-                ><%= formData.message || '' %></textarea>
-
-                <!-- Character Counter -->
-                <div class="counter">
-                    <span id="charCount">0</span>/500
+                <div class="row">
+                    <input type="text" name="firstName" placeholder="First Name" required>
+                    <input type="text" name="lastName" placeholder="Last Name" required>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit">
-                    Send it to the moon 🚀
-                </button>
+                <div class="row">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="text" name="phone" placeholder="Phone">
+                </div>
+
+                <textarea name="message" placeholder="Message" maxlength="500" required></textarea>
+
+                <button type="submit">Send it to the moon 🚀</button>
 
             </form>
 
-            <!-- SUCCESS MESSAGE -->
-            <% if (success === "true") { %>
-                <p class="success">
-                    Message sent successfully 🚀
-                </p>
-            <% } %>
-
-            <!-- ERROR MESSAGE -->
-            <% if (success === "false") { %>
-                <p class="error">
-                    Something went wrong ❌
-                </p>
-            <% } %>
-
-            <% if (error) { %>
-                <p class="error">
-                    <%= error %>
-                </p>
-            <% } %>
-
         </div>
 
-        <!-- RIGHT SIDE -->
+        <!-- RIGHT -->
         <div class="right">
             <img src="/image/astronaut.png" alt="astronaut">
         </div>
 
     </div>
 
-    <!-- JS -->
-    <script src="/js/main.js"></script>
+</div>
 
+<script src="/js/main.js"></script>
 </body>
 </html>
