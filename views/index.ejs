@@ -2,54 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Get in touch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get In Touch</title>
+
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body class="contact-page">
 
-<div class="page-wrapper">
+    <div class="page-wrapper">
 
-    <div class="glass-card">
+        <div class="glass-card">
 
-        <!-- LEFT -->
-        <div class="left">
+            <!-- LEFT SECTION -->
+            <div class="left">
 
-            <h1>Get in <span>touch</span></h1>
+                <h1>
+                    Get in <span>touch</span>
+                </h1>
 
-            <p class="subtitle">
-                Reach out and let’s create something amazing together.
-            </p>
+                <p class="subtitle">
+                    Reach out and let's create something amazing together.
+                </p>
 
-            <form action="/contact" method="POST">
+                <!-- SUCCESS MESSAGE -->
+                <% if (success === "true") { %>
+                    <div class="success-box">
+                        ✅ Message sent successfully
+                    </div>
+                <% } %>
 
-                <div class="row">
-                    <input type="text" name="firstName" placeholder="First Name" required>
-                    <input type="text" name="lastName" placeholder="Last Name" required>
+                <!-- ERROR MESSAGE -->
+                <% if (error) { %>
+                    <div class="error-box">
+                        ❌ <%= error %>
+                    </div>
+                <% } %>
+
+                <!-- CONTACT FORM -->
+                <form action="/contact" method="POST">
+
+                    <div class="row">
+                        <input
+                            type="text"
+                            name="firstName"
+                            placeholder="First Name"
+                            value="<%= formData?.firstName || '' %>"
+                            required
+                        >
+
+                        <input
+                            type="text"
+                            name="lastName"
+                            placeholder="Last Name"
+                            value="<%= formData?.lastName || '' %>"
+                            required
+                        >
+                    </div>
+
+                    <div class="row">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value="<%= formData?.email || '' %>"
+                            required
+                        >
+
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone"
+                            value="<%= formData?.phone || '' %>"
+                        >
+                    </div>
+
+                    <textarea
+                        name="message"
+                        maxlength="500"
+                        placeholder="Write your message..."
+                        required
+                    ><%= formData?.message || '' %></textarea>
+
+                    <button type="submit">
+                        Send Message 🚀
+                    </button>
+
+                </form>
+
+                <!-- ADMIN SECTION -->
+                <div class="admin-actions">
+
+                    <% if (isAuth) { %>
+
+                        <div class="admin-buttons">
+
+                            <a href="/messages" class="btn ghost">
+                                📩 Open Dashboard
+                            </a>
+
+                            <a href="/logout" class="btn danger">
+                                🚪 Logout
+                            </a>
+
+                        </div>
+
+                    <% } else { %>
+
+                        <div class="admin-buttons">
+
+                            <a href="/login" class="btn ghost">
+                                🔐 Admin Login
+                            </a>
+
+                        </div>
+
+                    <% } %>
+
                 </div>
 
-                <div class="row">
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="text" name="phone" placeholder="Phone">
-                </div>
+            </div>
 
-                <textarea name="message" placeholder="Message" maxlength="500" required></textarea>
+            <!-- RIGHT SECTION -->
+            <div class="right">
 
-                <button type="submit">Send it to the moon 🚀</button>
+                <img
+                    src="/image/astronaut.png"
+                    alt="Astronaut"
+                >
 
-            </form>
+            </div>
 
-        </div>
-
-        <!-- RIGHT -->
-        <div class="right">
-            <img src="/image/astronaut.png" alt="astronaut">
         </div>
 
     </div>
 
-</div>
+    <script src="/js/main.js"></script>
 
-<script src="/js/main.js"></script>
 </body>
 </html>

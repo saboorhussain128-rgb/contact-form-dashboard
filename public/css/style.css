@@ -1186,3 +1186,20 @@ body {
     gap: 10px;
     margin-top: 15px;
 }
+
+/* HOME PAGE ADMIN BUTTONS */
+
+.admin-actions {
+    margin-top: 50px;
+}
+
+.admin-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-buttons .btn {
+    min-width: 180px;
+    text-align: center;
+}

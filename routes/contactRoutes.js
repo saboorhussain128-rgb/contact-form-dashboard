@@ -34,7 +34,8 @@ router.get("/login", (req, res) => {
 });
 
 /**
- * LOGIN HANDLER (FINAL FIXED VERSION)
+ * LOGIN HANDLER (FIXED FLOW)
+ * Login → HOME PAGE → Dashboard button goes to /messages
  */
 router.post("/login", async (req, res) => {
   try {
@@ -45,12 +46,13 @@ router.post("/login", async (req, res) => {
     // STEP 1: check username
     if (username !== process.env.ADMIN_USER) {
       console.log("❌ Invalid username");
+
       return res.render("login", {
         error: "Invalid credentials",
       });
     }
 
-    // STEP 2: check if env hash exists
+    // STEP 2: check env password hash exists
     if (!process.env.ADMIN_HASH_PASSWORD) {
       console.log("❌ Missing ADMIN_HASH_PASSWORD in .env");
 
@@ -59,7 +61,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // STEP 3: bcrypt password check
+    // STEP 3: compare password
     const isPasswordValid = await bcrypt.compare(
       password,
       process.env.ADMIN_HASH_PASSWORD
@@ -73,11 +75,16 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // STEP 4: SUCCESS LOGIN
+    // STEP 4: success login
     req.session.isAuth = true;
+
     console.log("✅ Login Success");
 
-    return res.redirect("/messages");
+    /**
+     * IMPORTANT CHANGE:
+     * After login → go to HOME page first
+     */
+    return res.redirect("/");
 
   } catch (error) {
     console.log("LOGIN ERROR:", error);

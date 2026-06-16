@@ -1,18 +1,19 @@
 const Contact = require("../models/Contact");
 
 /**
- * Home Page
+ * HOME PAGE
  */
 exports.getHome = (req, res) => {
   res.render("index", {
-    success: req.query.success,
+    success: req.query.success || null,
     error: null,
     formData: {},
+    isAuth: req.session.isAuth || false,
   });
 };
 
 /**
- * Save Contact Form
+ * SAVE CONTACT FORM
  */
 exports.submitContact = async (req, res) => {
   try {
@@ -20,9 +21,10 @@ exports.submitContact = async (req, res) => {
 
     if (!firstName || !lastName || !email || !message) {
       return res.render("index", {
-        success: false,
-        error: "All fields are required",
+        success: null,
+        error: "All required fields must be filled.",
         formData: req.body,
+        isAuth: req.session.isAuth || false,
       });
     }
 
@@ -34,21 +36,28 @@ exports.submitContact = async (req, res) => {
       message,
     });
 
-    res.redirect("/?success=true");
+    return res.redirect("/?success=true");
+
   } catch (err) {
-    console.log("Save Error:", err);
-    res.redirect("/?success=false");
+    console.log("SAVE ERROR:", err);
+
+    return res.render("index", {
+      success: null,
+      error: "Failed to submit message.",
+      formData: req.body,
+      isAuth: req.session.isAuth || false,
+    });
   }
 };
 
 /**
- * Messages Dashboard
+ * MESSAGES DASHBOARD
  */
 exports.getMessages = async (req, res) => {
   try {
     const search = req.query.search || "";
-    const page = parseInt(req.query.page) || 1;
-    const limit = 5;
+    const page = Number(req.query.page) || 1;
+    const limit = 6;
 
     const query = search
       ? {
@@ -70,7 +79,7 @@ exports.getMessages = async (req, res) => {
 
     const now = new Date();
 
-    const startOfToday = new Date(now);
+    const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
     const startOfWeek = new Date(now);
@@ -81,48 +90,55 @@ exports.getMessages = async (req, res) => {
 
     const stats = {
       total: await Contact.countDocuments(),
+
       today: await Contact.countDocuments({
         createdAt: { $gte: startOfToday },
       }),
+
       week: await Contact.countDocuments({
         createdAt: { $gte: startOfWeek },
       }),
+
       month: await Contact.countDocuments({
         createdAt: { $gte: startOfMonth },
       }),
     };
 
-    res.render("messages", {
+    return res.render("messages", {
       messages,
       search,
+      stats,
       totalMessages,
       currentPage: page,
-      totalPages: Math.ceil(totalMessages / limit),
-      stats,
+      totalPages: Math.max(1, Math.ceil(totalMessages / limit)),
       query: req.query || {},
     });
+
   } catch (err) {
-    console.log("Fetch Error:", err);
-    res.send("Error loading messages");
+    console.log("FETCH ERROR:", err);
+
+    return res.status(500).send("Error loading messages");
   }
 };
 
 /**
- * Delete Message
+ * DELETE MESSAGE
  */
 exports.deleteMessage = async (req, res) => {
   try {
     await Contact.findByIdAndDelete(req.params.id);
 
-    res.redirect("/messages?deleted=true");
+    return res.redirect("/messages?deleted=true");
+
   } catch (err) {
-    console.log("Delete Error:", err);
-    res.redirect("/messages?error=delete");
+    console.log("DELETE ERROR:", err);
+
+    return res.redirect("/messages?error=delete");
   }
 };
 
 /**
- * Edit Message Page
+ * EDIT MESSAGE PAGE
  */
 exports.getEditMessage = async (req, res) => {
   try {
@@ -132,31 +148,39 @@ exports.getEditMessage = async (req, res) => {
       return res.redirect("/messages?error=notfound");
     }
 
-    res.render("editMessage", {
+    return res.render("editMessage", {
       message,
     });
+
   } catch (err) {
-    console.log("Edit Error:", err);
-    res.redirect("/messages?error=server");
+    console.log("EDIT ERROR:", err);
+
+    return res.redirect("/messages?error=server");
   }
 };
 
 /**
- * Update Message
+ * UPDATE MESSAGE
  */
 exports.updateMessage = async (req, res) => {
   try {
-    await Contact.findByIdAndUpdate(req.params.id, req.body);
+    await Contact.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
 
-    res.redirect("/messages?updated=true");
+    return res.redirect("/messages?updated=true");
+
   } catch (err) {
-    console.log("Update Error:", err);
-    res.redirect("/messages?error=update");
+    console.log("UPDATE ERROR:", err);
+
+    return res.redirect("/messages?error=update");
   }
 };
 
 /**
- * View Single Message
+ * VIEW SINGLE MESSAGE
  */
 exports.getMessageDetail = async (req, res) => {
   try {
@@ -166,11 +190,13 @@ exports.getMessageDetail = async (req, res) => {
       return res.redirect("/messages?error=notfound");
     }
 
-    res.render("messageDetail", {
+    return res.render("messageDetail", {
       message,
     });
+
   } catch (err) {
-    console.log("Detail Error:", err);
-    res.redirect("/messages?error=server");
+    console.log("DETAIL ERROR:", err);
+
+    return res.redirect("/messages?error=server");
   }
 };
